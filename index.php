@@ -1,63 +1,45 @@
 <?php 
 
 include('includes/database.php');
-include('includes/config.php');
 
 include('includes/header.php');
 
-if(isset($_SESSION['id'])){
-   header("Location: dashboard.php"); 
-   die();
-}
-
-if(isset($_POST["email"])){
-   if($stm = $connect -> prepare("SELECT * FROM users WHERE email = ? AND password = ? AND active = 1")){
-      $hashed = SHA1($_POST['password']);
-      $stm -> bind_param("ss", $_POST['email'], $hashed);
-      $stm -> execute();
-      $result = $stm -> get_result();
-      $user = $result -> fetch_assoc();
-
-      if($user){
-         $_SESSION["id"] = $user["id"];
-         $_SESSION["email"] = $user["email"];
-         $_SESSION["username"] = $user["username"];
-         setMessage("Pomyślnie zalogowano");
-
-         header("Location: dashboard.php"); 
-         die();
-      }
-      else{
-         setMessage("Niepoprawny email lub hasło");
-      }
-
-      $stm -> close();
-
-   }else{ 
-      echo "fetching user data failed!";
-   }
-}
 
 ?>
 
-<div class="container mt-5">
-   <div class="row justify-content-center">
-      <div class="col-md-6">
-         <form method="post">
-            <div class="form-outline mb-4">
-               <input type="email" id="email" name="email" class="form-control" />
-               <label class="form-label" for="email">Email</label>
-            </div>
-            <div class="form-outline mb-4">
-               <input type="password" id="password" name="password" class="form-control" />
-               <label class="form-label" for="password">Hasło</label>
-            </div>
+<main>
+   <h2>Oferta</h2>
+   <div style="margin: 20px">
+      <?php
 
-            <button type="submit" class="btn btn-primary btn-block">Zaloguj</button>
-      </form>
+            if($stm = $connect->prepare('SELECT * FROM products')) {
+               $stm->execute();
+               $result = $stm->get_result();
+
+                while ($row = mysqli_fetch_array($result)) {
+
+                    ?>
+                    <div class="col-md-3">
+
+                        <form method="post" action="Cart.php?action=add&id=<?php echo $row["id"]; ?>">
+
+                            <div class="product">
+                                <div class="img-responsive"><img src="./images/<?php echo $row['image']; ?>"></div>
+                                <h5 class="text-info"><?php echo $row["title"]; ?></h5>
+                                <h5 class="text-danger"><?php echo $row["price"]; ?></h5>
+                                <input type="text" name="quantity" class="form-control" value="1">
+                                <input type="hidden" name="hidden_name" value="<?php echo $row["title"]; ?>">
+                                <input type="hidden" name="hidden_price" value="<?php echo $row["price"]; ?>">
+                                <input type="submit" name="add" style="margin-top: 5px;" class="btn btn-success"value="Add to Cart">
+                            </div>
+                        </form>
+                    </div>
+                    <?php
+                }
+            }
+        ?>
    </div>
-   </div>
-</div>
+</main>
 
 <?php
 

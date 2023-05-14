@@ -1,7 +1,7 @@
 <?php
 
 include('includes/functions.php');
-
+include('includes/config.php');
  ?> 
 
 <!DOCTYPE html>
@@ -24,12 +24,13 @@ include('includes/functions.php');
     />
 
     <link rel="stylesheet" href="css/mdb.min.css" />
+    <link rel="stylesheet" href="css/customs/main.css" />
     <link rel="stylesheet" href="css/customs/pages/products.css" />
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Menu</a>
+    <a class="navbar-brand" href="#">Sklep Online</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -50,7 +51,18 @@ include('includes/functions.php');
           <a class="nav-link" href="dashboard.php">Panel</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="logout.php">Wyloguj</a>
+          <?php 
+            if(!isset($_SESSION['id'])){  
+          ?>  
+            <a class="nav-link" href="login.php">Zaloguj</a>
+          <?php
+            }else{
+         ?>
+            <a class="nav-link" href="logout.php">Wyloguj</a>
+          <?php
+            }
+          ?>
+          
         </li>
       </ul>
     </div>
