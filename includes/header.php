@@ -2,6 +2,18 @@
 
 include('includes/functions.php');
 include('includes/config.php');
+
+if(!isset($_SESSION["cart"])){
+  $_SESSION["cart"] = array();
+};
+
+$totalCount = array_reduce( $_SESSION["cart"], function ($sum, $entry) {
+  $sum += $entry["item_quantity"]; 
+  return $sum;
+}, 0);
+
+$cartCountNumb = $totalCount ? "(" . $totalCount .")" : "";
+
  ?> 
 
 <!DOCTYPE html>
@@ -46,6 +58,9 @@ include('includes/config.php');
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/project_p_ziomek/">Główna</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="cart.php"><?php echo "Koszyk" . $cartCountNumb; ?></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="dashboard.php">Panel</a>

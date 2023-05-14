@@ -6,19 +6,24 @@ secure();
 
 if (isset($_POST['username'])){
 
-    if ($stm = $connect->prepare('INSERT INTO users (username,email, password, active) VALUES (?, ?, ?, ?)')){
+    if(empty($_POST['username']) || empty($_POST['email']) || $_POST['password']){ 
+        setMessage("Wszystkie pola powinny być wypełnione");
+    }
+    else{
+        if ($stm = $connect->prepare('INSERT INTO users (username,email, password, active) VALUES (?, ?, ?, ?)')){
         
-        $hashed = SHA1($_POST['password']);
-        $stm->bind_param('ssss', $_POST['username'], $_POST['email'], $hashed,  $_POST['active']);
-        $stm->execute();
-        
-        setMessage("Nowy użytkownik" . $_SESSION['username'] . " został dodany");
-        header('Location: users.php');
-        $stm->close();
-        die();
-
-    } else {
-        echo 'Could not prepare statement!';
+            $hashed = SHA1($_POST['password']);
+            $stm->bind_param('ssss', $_POST['username'], $_POST['email'], $hashed,  $_POST['active']);
+            $stm->execute();
+            
+            setMessage("Nowy użytkownik" . $_SESSION['username'] . " został dodany");
+            header('Location: users.php');
+            $stm->close();
+            die();
+    
+        } else {
+            echo 'Could not prepare statement!';
+        }
     }
 
 }

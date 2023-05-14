@@ -6,23 +6,24 @@ include('includes/header.php');
 secure();
 
 if (isset($_POST['title'])) {
-
-    if ($stm = $connect->prepare('UPDATE products set title = ?, content = ?, image = ?, price = ?, WHERE id = ?')) {
-        $stm->bind_param('ssssi', $_POST['title'], $_POST['content'], $_POST['image'], $_POST['price'], $_GET['id']);
-        $stm->execute();
-
-        $stm->close();
-
-        setMessage("Produkt  " . $_GET['id'] . " został zaktualizowany");
-     //   header('Location: products.php');
-        die();
-
-    } else {
-        echo 'Could not prepare post update statement!';
+    if(empty($_POST['title']) || empty($_POST['price']) || empty($_POST['image'])){
+        setMessage("Wszystkie pola powinny być wypełnione");
     }
-
-
-
+    else{
+        if ($stm = $connect->prepare('UPDATE products set title = ?, image = ?, price = ? WHERE id = ?')) {
+            $stm->bind_param('sssi', $_POST['title'], $_POST['image'], $_POST['price'], $_GET['id']);
+            $stm->execute();
+    
+            $stm->close();
+    
+            setMessage("Produkt  " . $_GET['id'] . " został zaktualizowany");
+            header('Location: products.php');
+            die();
+    
+        } else {var_dump($_POST['price']);
+            echo 'Could not prepare post update statement!';
+        }
+    }
 }
 
 
@@ -38,6 +39,11 @@ if (isset($_GET['id'])) {
         if ($product) {
 
             ?>
+            <?php
+
+            getMessage();
+
+            ?>
             <div class="container mt-5">
                 <div class="row justify-content-center">
                     <div class="col-md-6">
@@ -50,10 +56,7 @@ if (isset($_GET['id'])) {
                                 <label class="form-label" for="title">Title</label>
                             </div>
                             <div class="form-outline mb-4">
-                                <textarea name="content" id="content"><?php echo $product['content'] ?></textarea>
-                            </div>
-                            <div class="form-outline mb-4">
-                                <input class="form-control" id="image" name="image" type="file" name="uploadfile" value="<?php echo "./images/" . $product['image'] ?>" />
+                                <input class="form-control" id="image" accept=".png, .jpg, .jpeg" name="image" type="file" name="uploadfile" value="<?php echo "./images/" . $product['image'] ?>" />
                                 <label class="form-label" for="image">Zdjęcie</label>
                             </div>
                             <!--
@@ -63,14 +66,11 @@ if (isset($_GET['id'])) {
                                 </div>
                             -->
                             <div class="form-outline mb-4">
-                                <input type="text" id="price" name="price" class="form-control" value="<?php echo $product['price'] ?>" />
+                                <input type="number" id="price" name="price" class="form-control" value="<?php echo $product['price'] ?>" />
                                 <label class="form-label" for="price">price</label>
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">Zapisz</button>
                         </form>
-
-
-
                     </div>
 
                 </div>
