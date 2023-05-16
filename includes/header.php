@@ -2,6 +2,18 @@
 
 include('includes/functions.php');
 include('includes/config.php');
+
+if(!isset($_SESSION["cart"])){
+  $_SESSION["cart"] = array();
+};
+
+$totalCount = array_reduce( $_SESSION["cart"], function ($sum, $entry) {
+  $sum += $entry["item_quantity"]; 
+  return $sum;
+}, 0);
+
+$cartCountNumb = $totalCount ? "(" . $totalCount .")" : "";
+
  ?> 
 
 <!DOCTYPE html>
@@ -26,6 +38,61 @@ include('includes/config.php');
     <link rel="stylesheet" href="css/mdb.min.css" />
     <link rel="stylesheet" href="css/customs/main.css" />
     <link rel="stylesheet" href="css/customs/pages/products.css" />
+
+    <style>
+
+        #navbarNav{
+          justify-content: flex-end;
+        }
+
+        .product{
+          border: 1px solid #eaeaec;
+          margin: 20px;  
+          padding: 10px;
+          text-align: center;
+          background-color: #b7b5b5;
+          border-radius: 10px;
+        }
+
+        .product img{
+          vertical-align: middle;
+            width: 100px;
+            height: 200px;
+            object-fit: contain;
+        }
+
+        .product h5{
+            color: white;
+            font-size: 1.45rem;
+        }
+
+        table, th, tr{
+          text-align: center;
+        }
+
+        .title2{
+          text-align: center;
+          color: #66afe9;
+          background-color: #efefef;
+          padding: 2%;
+        }
+
+        h2{
+          text-align: center;
+          color: #89939b;
+          background-color: #efefef;
+          padding: 1rem;
+        }
+
+        table th{
+          background-color: #efefef;
+        }
+
+      .shopContent{
+          display: flex;
+          flex-wrap: wrap;
+      }
+    </style>
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -46,6 +113,9 @@ include('includes/config.php');
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/project_p_ziomek/">Główna</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="cart.php"><?php echo "Koszyk" . $cartCountNumb; ?></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="dashboard.php">Panel</a>

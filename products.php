@@ -52,7 +52,7 @@ if ($stm = $connect->prepare('SELECT * FROM products')){
         <td><?php echo $record['id']; ?> </td>
         <td><?php echo $record['title']; ?> </td>
         <td><?php echo $record['content']; ?> </td>
-        <td><?php echo $record['price']; ?> </td>
+        <td><?php echo $record['price']; ?> zł</td>
         <td>
             <div class="Products_item_imgWrapper"><img src="./images/<?php echo $record['image']; ?>"></div>
         </td>
