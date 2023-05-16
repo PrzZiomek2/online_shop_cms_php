@@ -6,16 +6,22 @@ include('includes/header.php');
 secure();
 
 if (isset($_POST['title'])) {
-    if(empty($_POST['title']) || empty($_POST['price']) || empty($_POST['image'])){
+    $filename = $_FILES["image"]["name"];
+
+    if(empty($_POST['title']) || empty($_POST['price']) || empty($filename)){
         setMessage("Wszystkie pola powinny być wypełnione");
     }
     else{
         if ($stm = $connect->prepare('UPDATE products set title = ?, image = ?, price = ? WHERE id = ?')) {
-            $stm->bind_param('sssi', $_POST['title'], $_POST['image'], $_POST['price'], $_GET['id']);
+            $stm->bind_param('sssi', $_POST['title'], $filename, $_POST['price'], $_GET['id']);
             $stm->execute();
     
             $stm->close();
-    
+
+            $tempname = $_FILES["image"]["tmp_name"]; var_dump($tempname);
+            $folder = "./images/" . $filename;
+            move_uploaded_file($tempname, $folder);
+
             setMessage("Produkt  " . $_GET['id'] . " został zaktualizowany");
             header('Location: products.php');
             die();
@@ -49,7 +55,7 @@ if (isset($_GET['id'])) {
                     <div class="col-md-6">
                         <h1 class="display-1">Edytuj produkt</h1>
 
-                        <form method="post">
+                        <form method="post" enctype="multipart/form-data">
                             <div class="form-outline mb-4">
                                 <input type="text" id="title" name="title" class="form-control"
                                     value="<?php echo $product['title'] ?>" />
@@ -75,15 +81,6 @@ if (isset($_GET['id'])) {
 
                 </div>
             </div>
-
-
-            <script src="js/tinymce/tinymce.min.js"></script>
-            <script>
-                tinymce.init({
-                    selector: '#content'
-                });
-            </script>
-
 
             <?php
         }

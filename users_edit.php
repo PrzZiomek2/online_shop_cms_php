@@ -6,31 +6,35 @@ secure();
 
 if (isset($_POST['username'])) {
 
-    if ($stm = $connect->prepare('UPDATE users set  username = ?,email = ? , active = ?  WHERE id = ?')) {
-        $stm->bind_param('sssi', $_POST['username'], $_POST['email'], $_POST['active'], $_GET['id']);
-        $stm->execute();
-
-        $stm->close();
-
-        if (isset($_POST['password'])) {
-            if ($stm = $connect->prepare('UPDATE users set  password = ? WHERE id = ?')) {
-                $hashed = SHA1($_POST['password']);
-                $stm->bind_param('si', $hashed, $_GET['id']);
-                $stm->execute();
-
-                $stm->close();
-
-            } else {
-                echo 'Could not prepare password update statement!';
+    if(empty($_POST['username']) || empty($_POST['email']) || empty($_POST['password'])){ 
+        setMessage("Wszystkie pola powinny być wypełnione");
+    }else{
+        if ($stm = $connect->prepare('UPDATE users set  username = ?,email = ? , active = ?  WHERE id = ?')) {
+            $stm->bind_param('sssi', $_POST['username'], $_POST['email'], $_POST['active'], $_GET['id']);
+            $stm->execute();
+    
+            $stm->close();
+    
+            if (isset($_POST['password'])) {
+                if ($stm = $connect->prepare('UPDATE users set  password = ? WHERE id = ?')) {
+                    $hashed = SHA1($_POST['password']);
+                    $stm->bind_param('si', $hashed, $_GET['id']);
+                    $stm->execute();
+    
+                    $stm->close();
+    
+                } else {
+                    echo 'Could not prepare password update statement!';
+                }
             }
+    
+            setMessage("Użytkownik  " . $_GET['id'] . " został zaktualizowany");
+            header('Location: users.php');
+            die();
+    
+        } else {
+            echo 'Could not prepare user update statement statement!';
         }
-
-        setMessage("Użytkownik  " . $_GET['id'] . " został zaktualizowany");
-        header('Location: users.php');
-        die();
-
-    } else {
-        echo 'Could not prepare user update statement statement!';
     }
 
 }
@@ -48,6 +52,11 @@ if (isset($_GET['id'])) {
         if ($user) {
 
             ?>
+            <?php
+
+            getMessage();
+
+            ?>
             <div class="container mt-5">
                 <div class="row justify-content-center">
                     <div class="col-md-6">
@@ -60,7 +69,7 @@ if (isset($_GET['id'])) {
                                 <label class="form-label" for="username">Imię i Nazwisko</label>
                             </div>
                             <div class="form-outline mb-4">
-                                <input type="email" id="email" name="email" class="form-control active"
+                                <input type="email" id="email" name="email" class="form-control active" 
                                     value="<?php echo $user['email'] ?>" />
                                 <label class="form-label" for="email">Email</label>
                             </div>

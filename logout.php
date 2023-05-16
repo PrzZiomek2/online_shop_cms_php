@@ -1,7 +1,10 @@
 <?php
 include('includes/config.php');
 
-session_destroy();
+unset($_SESSION['id']);
+unset($_SESSION['email']);
+unset($_SESSION['username']);
+
 
 header("location: /project_p_ziomek");
 

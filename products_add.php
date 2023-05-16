@@ -76,12 +76,6 @@ getMessage();
     </div>
 </div>
 
-<script src="js/tinymce/tinymce.min.js"></script>
-<script>
-    tinymce.init({
-        selector: '#content'
-    });
-</script>
 <?php
 include('includes/footer.php');
 ?>

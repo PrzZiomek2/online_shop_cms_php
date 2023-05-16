@@ -10,14 +10,14 @@ include('includes/header.php');
     }
     else{
         $count = count($_SESSION["cart"]);
-        $item_array = array(
+        $cartItems = array(
            'product_id' => $_POST["id"],
            'image' => $_POST["image"],
            'item_name' => $_POST["hidden_name"],
            'product_price' => $_POST["hidden_price"],
            'item_quantity' => $_POST["quantity"],
         );
-        array_push($_SESSION["cart"], $item_array);
+        array_push($_SESSION["cart"], $cartItems);
         setMessage("Produkt " . $_POST['hidden_name'] . " został dodany do koszyka");
         header("Location: /project_p_ziomek/"); 
     }
@@ -34,7 +34,7 @@ getMessage();
    <h2>Oferta</h2>
 
    <div style="margin: 20px">
-   <section>
+   <section class="shopContent"> 
       <?php
             if($stm = $connect->prepare('SELECT * FROM products')) {
                $stm->execute();
@@ -49,8 +49,8 @@ getMessage();
 
                             <div class="product">
                                 <div class="img-responsive"><img src="./images/<?php echo $row['image']; ?>"></div>
-                                <h5 class="text-info"><?php echo $row["title"]; ?></h5>
-                                <h5 class="text-danger"><?php echo $row["price"]; ?>zł</h5>
+                                <h5><?php echo $row["title"]; ?></h5>
+                                <h5 class="text-danger"><?php echo $row["price"]; ?> zł</h5>
                                 <input type="hidden" name="id" class="form-control" value="<?php echo $row["id"]; ?>">
                                 <input type="hidden" name="image" class="form-control" value="<?php echo $row["image"]; ?>">
                                 <input type="number" name="quantity" class="form-control" value="1">

@@ -26,16 +26,16 @@ if (isset($_GET["action"])){
 getMessage();
 
 ?>
-<h3 class="title2">Shopping Cart Details</h3>
+<h3 class="title2">Koszyk</h3>
     <main>
         <div class="table-responsive">
             <table class="table table-bordered">
             <tr>
-                <th width="30%">Product Name</th>
-                <th width="10%">Quantity</th>
-                <th width="13%">Price Details</th>
-                <th width="10%">Total Price</th>
-                <th width="17%">Remove Item</th>
+                <th width="30%">Nazwa produktu</th>
+                <th width="13%">Widok</th>
+                <th width="10%">Ilość</th>    
+                <th width="10%">Łączna kwota</th>
+                <th width="17%">Usuń</th>
             </tr>
 
             <?php             
@@ -60,7 +60,7 @@ getMessage();
                         ?>
                         <tr>
                             <td colspan="3" align="right">Suma</td>
-                            <th align="right"><?php echo number_format($total, 2); ?>zł</th>
+                            <th align="right"><?php echo number_format($total, 2); ?> zł</th>
                             <td></td>
                         </tr>
                         <?php

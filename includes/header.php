@@ -38,6 +38,61 @@ $cartCountNumb = $totalCount ? "(" . $totalCount .")" : "";
     <link rel="stylesheet" href="css/mdb.min.css" />
     <link rel="stylesheet" href="css/customs/main.css" />
     <link rel="stylesheet" href="css/customs/pages/products.css" />
+
+    <style>
+
+        #navbarNav{
+          justify-content: flex-end;
+        }
+
+        .product{
+          border: 1px solid #eaeaec;
+          margin: 20px;  
+          padding: 10px;
+          text-align: center;
+          background-color: #b7b5b5;
+          border-radius: 10px;
+        }
+
+        .product img{
+          vertical-align: middle;
+            width: 100px;
+            height: 200px;
+            object-fit: contain;
+        }
+
+        .product h5{
+            color: white;
+            font-size: 1.45rem;
+        }
+
+        table, th, tr{
+          text-align: center;
+        }
+
+        .title2{
+          text-align: center;
+          color: #66afe9;
+          background-color: #efefef;
+          padding: 2%;
+        }
+
+        h2{
+          text-align: center;
+          color: #89939b;
+          background-color: #efefef;
+          padding: 1rem;
+        }
+
+        table th{
+          background-color: #efefef;
+        }
+
+      .shopContent{
+          display: flex;
+          flex-wrap: wrap;
+      }
+    </style>
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
